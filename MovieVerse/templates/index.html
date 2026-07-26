@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MovieVerse | Smart Movie Recommendations</title>
+
+  <!-- Google Font: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Our own stylesheet -->
+  <link rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <!-- ============================= -->
+  <!-- 1. STICKY NAVIGATION BAR      -->
+  <!-- ============================= -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+
+      <!-- Logo + Icon -->
+      <a href="#home" class="logo">
+        <span class="logo-icon">🎬</span>
+        <span class="logo-text">Movie<span class="logo-accent">Verse</span></span>
+      </a>
+
+      <!-- Hamburger icon for mobile menu -->
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <!-- Navigation Links -->
+      <nav class="nav-links" id="navLinks">
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#recommendations" class="nav-link">Recommendations</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#about" class="nav-link">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============================= -->
+  <!-- 2. HERO SECTION               -->
+  <!-- ============================= -->
+  <section class="hero" id="home">
+    <!-- Dark overlay sits on top of the background image (see CSS) -->
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <h1 class="hero-title">
+        Find Your Next <span class="text-highlight">Favorite Movie</span>
+      </h1>
+      <p class="hero-subtitle">
+        Discover movies similar to your favorites using Machine Learning.
+      </p>
+
+      <!-- Glassmorphism Search Bar -->
+      <div class="search-bar" id="searchBar">
+        <span class="search-icon">🔍</span>
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="Search a movie you love..."
+      >
+        <button class="btn-recommend" id="recommendBtn">Recommend</button>
+      </div>
+
+      <p class="hero-hint">Try: Inception, Interstellar, The Dark Knight</p>
+    </div>
+
+    <!-- Scroll cue at bottom of hero -->
+    <div class="scroll-cue">
+      <span>Scroll to explore</span>
+      <div class="scroll-arrow"></div>
+    </div>
+</section>
+
+<!-- ============================= -->
+<!-- 3. RECOMMENDATION SECTION     -->
+<!-- ============================= -->
+<section class="recommendations" id="recommendations">
+
+    <div class="section-header">
+        <p class="section-eyebrow">Powered by KNN Collaborative Filtering</p>
+        <h2 class="section-title">Recommended For You</h2>
+        <p class="section-subtitle">
+            Based on similarity scores computed from thousands of user ratings.
+        </p>
+    </div>
+
+    <div class="movie-grid">
+
+        {% for movie in trending_movies %}
+
+        <article class="movie-card">
+
+            <div class="badge">Recommended for You</div>
+
+            <div class="poster-wrapper">
+
+                <img
+                    src="{{ movie.poster }}"
+                    alt="{{ movie.title }}"
+                    class="movie-poster"
+                    onerror="this.onerror=null;this.src='https://placehold.co/500x750/1e1e1e/e50914?text=No+Poster';"
+                >
+
+                <div class="match-ring">
+                    {{ movie.match }}%
+                </div>
+
+            </div>
+
+            <div class="movie-info">
+
+                <h3 class="movie-title">
+                    {{ movie.title }}
+                </h3>
+
+                <p class="movie-genre">
+                    {{ movie.genre }}
+                </p>
+
+            </div>
+
+        </article>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+  <!-- ============================= -->
+  <!-- 4. FEATURES SECTION           -->
+  <!-- ============================= -->
+  <section class="features" id="features">
+    <div class="section-header">
+      <p class="section-eyebrow">Why MovieVerse</p>
+      <h2 class="section-title">Built For Movie Lovers</h2>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3 class="feature-title">Personalized Recommendations</h3>
+        <p class="feature-text">
+          Get suggestions tailored to your unique taste, not generic top-10 lists.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <h3 class="feature-title">KNN Machine Learning</h3>
+        <p class="feature-text">
+          Uses K-Nearest Neighbors to find movies most similar to what you love.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🎬</div>
+        <h3 class="feature-title">Huge Movie Database</h3>
+        <p class="feature-text">
+          Trained on thousands of titles from the trusted MovieLens dataset.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3 class="feature-title">Fast Search</h3>
+        <p class="feature-text">
+          Instant results so you spend less time searching and more time watching.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= -->
+  <!-- 5. ABOUT SECTION              -->
+  <!-- ============================= -->
+  <section class="about" id="about">
+    <div class="about-content">
+      <p class="section-eyebrow">The Engine Behind The Screen</p>
+      <h2 class="section-title">How MovieVerse Works</h2>
+      <p class="about-text">
+        This project uses <strong>K-Nearest Neighbors (KNN) collaborative filtering</strong>
+        on the <strong>MovieLens dataset</strong> to recommend similar movies based on
+        user ratings. By measuring how closely your taste matches other viewers,
+        the model finds hidden gems you're likely to enjoy next.
+      </p>
+
+      <div class="about-stats">
+        <div class="stat">
+          <span class="stat-number">9,000+</span>
+          <span class="stat-label">Movies Analyzed</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">100K+</span>
+          <span class="stat-label">User Ratings</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">KNN</span>
+          <span class="stat-label">Core Algorithm</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= -->
+  <!-- 6. FOOTER                     -->
+  <!-- ============================= -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <span class="logo-icon">🎬</span>
+        <span class="logo-text">Movie<span class="logo-accent">Verse</span></span>
+        <p class="footer-tagline">Movie Recommendation System</p>
+      </div>
+
+      <div class="footer-tech">
+        <h4 class="footer-heading">Built Using</h4>
+        <ul class="tech-list">
+          <li>HTML</li>
+          <li>CSS</li>
+          <li>JavaScript</li>
+          <li>Python</li>
+          <li>KNN</li>
+          <li>MovieLens Dataset</li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-bottom">&copy; 2026 MovieVerse. A resume portfolio project.</p>
+  </footer>
+
+  <!-- ============================= -->
+  <!-- POPUP MODAL (Backend Notice)  -->
+  <!-- ============================= -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+      <button class="modal-close" id="modalClose" aria-label="Close popup">&times;</button>
+      <div class="modal-icon">🤖</div>
+      <h3 class="modal-title">Backend Integration Coming Soon</h3>
+      <p class="modal-text">
+        This UI is connected to a Python KNN recommendation engine in the full application.
+      </p>
+    </div>
+  </div>
+
+  <!-- Our JavaScript file (loaded at the end so the DOM is ready) -->
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

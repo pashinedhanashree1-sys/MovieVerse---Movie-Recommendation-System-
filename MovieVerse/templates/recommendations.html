@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="navbar">
+    <div class="nav-container">
+        <h1>🎬 MovieVerse</h1>
+        <a href="/" class="btn-recommend">← Back to Home</a>
+    </div>
+</header>
+
+<section class="recommendations">
+
+    <div class="section-header">
+
+        {% if error %}
+            <div class="error-box">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <h2 class="section-title">
+            Recommended Movies for "{{ movie_name }}"
+        </h2>
+
+    </div>
+
+    <div class="movie-grid">
+
+        <div class="movie-grid">
+
+    {% for movie in recommendations %}
+
+    <article class="movie-card">
+
+        <div class="poster-wrapper">
+            <img
+                src="{{ movie.poster }}"
+                alt="{{ movie.title }}"
+                class="movie-poster"
+                onerror="this.onerror=null;this.src='https://placehold.co/500x750/1e1e1e/e50914?text=No+Poster';"
+            >
+        </div>
+
+        <div class="movie-info">
+            <h3>{{ movie.title }}</h3>
+            <p>{{ movie.genre }}</p>
+            <span>{{ movie.match }}% Match</span>
+        </div>
+
+    </article>
+
+    {% endfor %}
+    </div>
+
+</section>
+</body>
+</html>
